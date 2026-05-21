@@ -16,5 +16,6 @@ public class City {
     private Country country;
     private String description;
     private Long population;
+    private String zipCode;
     private Integer temperature;
 }
