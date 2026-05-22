@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.vindhya.globallocationsinfo.models.City;
 import org.vindhya.globallocationsinfo.models.Country;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public class InMemoryCityRepository implements CityRepository {
 
-	private final Map<Long, City> cities = new HashMap<>();
+	private final Map<Long, City> cities = new LinkedHashMap<>();
 
 	public InMemoryCityRepository(CountryRepository countryRepository) {
 		Country india = countryRepository.findById(1L).orElseThrow();
@@ -27,7 +27,7 @@ public class InMemoryCityRepository implements CityRepository {
 		cities.put(3L, new City(3L, "New York", us, "Largest city in the US", 8_804_190L, 22));
 		cities.put(4L, new City(4L, "Los Angeles", us, "Entertainment capital", 3_898_747L, 25));
 		cities.put(5L, new City(5L, "London", uk, "Capital of the UK", 8_961_989L, 19));
-		cities.put(6L, new City(6L, "Manchester", uk, "Major city in the UK", 2_782_831L, 17));
+		cities.put(6L, new City(6L, "Manchester", uk, "Major city in the UK", 2_782_831L,17));
 		cities.put(7L, new City(7L, "Toronto", canada, "Largest city in Canada", 2_794_356L, 18));
 		cities.put(8L, new City(8L, "Vancouver", canada, "West coast city in Canada", 662_248L, 16));
 		cities.put(9L, new City(9L, "Sydney", australia, "Largest city in Australia", 5_312_163L, 21));
@@ -36,7 +36,7 @@ public class InMemoryCityRepository implements CityRepository {
 		cities.put(12L, new City(12L, "Marseille", france, "Second largest city of France", 869_815L, 18));
 		cities.put(13L, new City(13L, "Lyon", france, "Third largest city in France", 513_485L, 14));
 		cities.put(14L, new City(14L, "Toulouse", france, "Fourth largest city in France", 479_553L, 16));
-		cities.put(15L, new City(15L, "Nice", france, "Popular coastal city on French Riviera", 340_017L, 17));
+		cities.put(15L, new City(15L, "Nice", france, "Popular coastal city on French Riviera", 340_017L,  	17));
 	}
 
 	@Override

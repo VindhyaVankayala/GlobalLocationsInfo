@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.vindhya.globallocationsinfo.dtos.CityDto;
 import org.vindhya.globallocationsinfo.dtos.GenericCityDto;
 import org.vindhya.globallocationsinfo.dtos.GenericCountryDto;
+import org.vindhya.globallocationsinfo.exceptions.ResourceNotFoundException;
 import org.vindhya.globallocationsinfo.models.City;
 import org.vindhya.globallocationsinfo.models.Country;
 import org.vindhya.globallocationsinfo.repositories.CityRepository;
@@ -33,15 +34,18 @@ public class LocationService {
 	}
 
 	public Page<CityDto> getCitiesByCountryId(Long countryId, Pageable pageable) {
+		countryRepository.findById(countryId)
+				.orElseThrow(() -> new ResourceNotFoundException("Country not found with id " + countryId));
+
 		List<CityDto> allCities = cityRepository.findAllByCountryId(countryId).stream()
 				.map(city -> toCityDto(city))
 				.toList();
 
 		int total = allCities.size();
-		int start = (int) pageable.getOffset();
+		int start = pageable.getOffset() > total ? total : (int) pageable.getOffset();
 		int end = Math.min(start + pageable.getPageSize(), total);
 
-		List<CityDto> pageContent = start >= total ? List.of() : allCities.subList(start, end);
+		List<CityDto> pageContent = allCities.subList(start, end);
 
 		return new PageImpl<>(pageContent, pageable, total);
 	}
@@ -61,6 +65,7 @@ public class LocationService {
 		CityDto dto = new CityDto();
 		dto.setId(city.getId());
 		dto.setName(city.getName());
+		dto.setCountryId(city.getCountry().getId());
 		return dto;
 	}
 
@@ -68,6 +73,7 @@ public class LocationService {
 		GenericCityDto dto = new GenericCityDto();
 		dto.setId(city.getId());
 		dto.setName(city.getName());
+		dto.setCountryId(city.getCountry().getId());
 		dto.setDescription(city.getDescription());
 		dto.setPopulation(city.getPopulation());
 		dto.setTemperature(city.getTemperature());
